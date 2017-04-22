@@ -1,4 +1,6 @@
-//nqueens_goroutine.go
+/*
+https://github.com/relloller/goroutines-nqueens
+*/
 
 package main
 
@@ -7,6 +9,8 @@ import (
 	"sync"
 	"time"
 )
+
+const nq_num = 14
 
 var solsArr []int
 
@@ -45,10 +49,6 @@ func ceil_half(n int) int {
 	return (n + 1) / 2
 }
 
-func checkRow(a [2]int, b [2]int) bool {
-	return a[0] != b[0]
-}
-
 func checkColumn(a [2]int, b [2]int) bool {
 	return a[1] != b[1]
 }
@@ -59,7 +59,6 @@ func checkDiagonal(a [2]int, b [2]int) bool {
 
 func checkSpace(a [2]int, b [2]int) bool {
 	return checkColumn(a, b) && checkDiagonal(a, b)
-	// return checkRow(a, b) && checkColumn(a, b) && checkDiagonal(a, b)
 }
 
 func checkSpaceEach(arr [][2]int, b [2]int) bool {
@@ -87,8 +86,6 @@ func nqrec(n int, arr [][2]int) int {
 }
 
 func nqueens(n1 int, arr1 [][2]int) int {
-	// var nqres = nqrec(n1, arr1)
-	// return nqres
 	return nqrec(n1, arr1)
 }
 
@@ -99,7 +96,7 @@ func closureCount(n int, lim int) func() int {
 	return func() int {
 		c += 1
 		if c == lim {
-			fmt.Println("Duration", time.Since(tmr_i), "Sum", sumSols(nq_num, solsArr))
+			fmt.Println("Duration:", time.Since(tmr_i), ", Solutions:", sumSols(nq_num, solsArr))
 		}
 		return c
 	}
@@ -114,7 +111,6 @@ func arrLenFill(arrL int, fillVal int) []int {
 }
 
 func main() {
-	const nq_num = 8
 	var wg sync.WaitGroup
 	var middlePos = floor_half(nq_num)
 	solsArr = arrLenFill(ceil_half(nq_num), 0)
@@ -142,4 +138,5 @@ func main() {
 	}
 
 	wg.Wait()
+	fmt.Println("# of queens: ", nq_num)
 }
